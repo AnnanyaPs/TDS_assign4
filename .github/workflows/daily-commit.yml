@@ -2,26 +2,29 @@ name: Daily Commit Workflow
 
 on:
   schedule:
-    - cron: '30 9 * * *'  # Runs daily at 9:30 AM UTC (adjust as needed)
+    - cron: '30 9 * * *'  # Runs daily at 09:30 UTC (adjust as needed)
   workflow_dispatch:      # Allows manual trigger
 
 jobs:
   daily-commit:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
+    permissions:
+      contents: write   # Needed to push commits
 
-      - name: Set Git Config 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set Git Config (23f3002003@ds.study.iitm.ac.in)
         run: |
           git config user.name "AnnanyaPs"
           git config user.email "23f3002003@ds.study.iitm.ac.in"
 
-      - name: Update Daily File
+      - name: Append timestamp to daily_updates.txt
         run: |
           echo "Daily update: $(date -u)" >> daily_updates.txt
 
-      - name: Commit Changes
+      - name: Commit and push changes (23f3002003@ds.study.iitm.ac.in)
         run: |
           git add daily_updates.txt
           git commit -m "Daily update - $(date -u)" || echo "No changes to commit"
